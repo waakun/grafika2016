@@ -1,0 +1,164 @@
+<!--
+Symulator żółwia wraz z rysowaniem krzywych Sierpińskiego i Hilberta.
+Autor: Wojciech Adamczewski.
+-->
+<!doctype html>
+<html>
+    <head>
+        <title>Symulator żółwia 2D</title>
+        <meta charset="utf-8">
+        <style>
+            body {
+                margin: 0; padding: 0;
+                background: #eeeeee;
+                font-family: Roboto, Arial, sans-serif;
+            }
+            h1 {
+                margin: 0 auto;
+                background: #6badf2;
+                border-bottom: 3px solid #3388e2;
+                text-align: center;
+                padding: 10px;
+                color: white;
+                text-shadow: 0px 3px 0px #3388e2,0px 3px 7px rgba(0, 0, 0, 0.4);
+            }
+            #logo {
+                border: 1px solid #c1c1c1;
+                width: 640px;
+                height: 300px;
+                padding: 0;
+            }
+            #canvas {
+                background: white;
+                display: table;
+                padding: 24px;
+                margin: 0 auto;
+                border-radius: 5px;
+                box-shadow: 0px 3px 0px #cdcdcd;
+                margin-top: 18px;
+                margin-bottom: 20px;
+                max-width: 695px;
+            }
+            #canvas canvas {
+                cursor: crosshair;
+            }
+            input, button {
+                border-radius: 5px;
+                border: none;
+                padding: 10px 18px;
+                font-family: Roboto, sans-serif;
+                margin: 5px;
+            }
+            input {
+                background: #fff;
+                box-shadow: 0px 3px 0px #cdcdcd;
+            }
+            button {
+                box-shadow: inset 0px -3px 0px #cdcdcd;
+                background: #eee;
+            }
+            button:active {
+                box-shadow: inset 0px 3px 0px white;
+            }
+            #controls {
+                text-align: center;
+            }
+            #position {
+                vertical-align: middle;
+                font-size: 10pt;
+                color: #ccc;
+                text-align: left;
+                display: inline-table;
+                border-spacing: 5px 0;
+            }
+            #xpos, #ypos, #xtur, #ytur { color: #777; width: 24px;}
+
+            #bottom {
+                display: flex;
+            }
+
+            #log, #commands {
+                font-size: 9pt;
+                background: #eee;
+                margin: 10px 0 0 0;
+                max-height: 122px;
+                border-radius: 5px;
+                box-shadow: 0px 3px 0px #cdcdcd;
+                overflow-y: auto;
+            }
+
+            #log {
+                width: 155px;
+            }
+
+            #commands {
+                width: 480px;
+                margin-left: 5px;
+                padding-bottom: 5px;
+                max-height: 117px;
+            }
+
+            .entry, #commands > div {
+                cursor: pointer;
+            }
+
+            .entry, #commands > div {
+                background: #fff;
+                color: #303030;
+                border-radius: 2px;
+                padding: 5px;
+                margin: 4px;
+            }
+
+            #commands > div {
+                height: auto;
+            }
+
+            #commands > h3 {
+                padding: 8px 0 5px 10px;
+                margin: 0;
+            }
+
+            #log {
+                margin-right: 5px;
+            }
+
+            .code {
+                font-family: monospace;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div id="canvas">
+            <canvas id="logo" width="640" height="300"></canvas>
+            <div id="controls">
+                <input type="text" placeholder="command" id="text">
+                <button id="click">GO!</button>
+                <button id="reset">Reset</button>
+                <table id="position">
+                    <tr><td>X</td><td id="xpos">0</td><td id="xtur">0</td></tr>
+                    <tr><td>Y</td><td id="ypos">0</td><td id="ytur">0</td></tr></table>
+            </div>
+            <div id="bottom">
+                <div id="log">
+                </div>
+                <div id="commands">
+                    <h3>Komendy</h3>
+                    <div onclick="updateInput('fd 10');"><span class="code">fd</span> &ndash; przesuwa żółwia naprzód</div>
+                    <div onclick="updateInput('bd 10');"><span class="code">bd</span> &ndash; przesuwa żółwia do tyłu</div>
+                    <div onclick="updateInput('pen');"><span class="code">pen</span> &ndash; zmienia ustawienie pisaka</div>
+                    <div onclick="updateInput('rt 45');"><span class="code">rt</span> &ndash; obraca żółwia zgodnie z ruchem wskazówek zegara</div>
+                    <div onclick="updateInput('lt 45');"><span class="code">lt</span> &ndash; obraca żółwia przeciwnie do ruchu wskazówek zegara</div>
+                    <div onclick="updateInput('color 255 125 0');"><span class="code">color</span> &ndash; zmienia kolor pisaka (3 parametry: wartości RGB w przedziale [0,255])</div>
+                    <div onclick="updateInput('reset');"><span class="code">reset</span> &ndash; przywraca planszę do początkowego stanu</div>
+                    <div onclick="updateInput('zero');"><span class="code">zero</span> &ndash; przenosi żółwia na początek układu współrzędnych i ustawia domyślny kąt 0&deg;</div>
+                    <div onclick="updateInput('wielokat 5 50');"><span class="code">wielokat</span> &ndash; rysuje wielokąt foremny o zadanej liczbie boków i długości boków (opcjonalne)</div>
+                    <div onclick="updateInput('sierpinski 4 20');"><span class="code">sierpinski</span> &ndash; rysuje krzywą Sierpińskiego o zadanym poziomie (1. parametr) i wielkości (2. parametr, opcjonalny)</div>
+                    <div onclick="updateInput('hilbert 4 20');"><span class="code">hilbert</span> &ndash; rysuje krzywą Hilberta o zadanym poziomie (1. parametr) i wielkości boku (2. parametr, opcjonalny)</div>
+                </div>
+            </div>
+        </div>
+    </body>
+    <script type="text/javascript" src="logo.js"></script>
+</html>
