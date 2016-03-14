@@ -1,0 +1,30 @@
+<!doctype html>
+<html>
+    <head>
+        <style>html, body { font-family: sans-serif; font-size: 10pt; }</style>
+        <title>Symulator żółwia 3D</title>
+        <meta charset="utf-8">
+    </head>
+    <body>
+        <canvas id="logo" width="640" height="360" style="background: #000"></canvas>
+        <div id="controls">
+            <button onclick="obs.changePosition(0,1,0)">UP</button>
+            <button onclick="obs.changePosition(0,-1,0)">DOWN</button>
+            <button onclick="obs.changePosition(-1,0,0)">LEFT</button>
+            <button onclick="obs.changePosition(1,0,0)">RIGHT</button>
+            <button onclick="obs.changePosition(0,0,1)">FORWARD</button>
+            <button onclick="obs.changePosition(0,0,-1)">BACKWARD</button>
+        </div>
+        <div id="sceneinfo">
+            cX:<span id="cX"></span>
+            cY:<span id="cY"></span>
+            cZ:<span id="cZ"></span>
+            rX:<span id="rX"></span>
+            rY:<span id="rY"></span>
+            rZ:<span id="rZ"></span>
+            fov:<span id="fov"></span></div>
+        <p>Dodatkowo niezbyt działające sterowanie strzałkami: down/up: do przodu/do tyłu w osi Z, left/right: obrót kamery w osi Y. Zmiana kąta widzenia: q/w</p>
+        <p>Uwaga: próba wyświetlenia obiektów znajdujących się za kamerą kończy się nieoczekiwanymi artefaktami!</p>
+        <script type="text/javascript" src="logo3d.js"></script>
+    </body>
+</html>
