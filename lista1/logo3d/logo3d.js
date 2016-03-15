@@ -328,15 +328,29 @@ function checkKey(e) {
         obs.changePosition(0,0,-1);
     // obrót
     else if (e.keyCode == '37') // left
-        obs.changeRotation(0,-1/32,0);
+        obs.changePosition(-1,0,0);
     else if (e.keyCode == '39') // right
-        obs.changeRotation(0,1/32,0);
+        obs.changePosition(1,0,0);
     // fov
     else if (e.keyCode == '81') // q
         obs.changeFOV(1/32);
     else if (e.keyCode == '87') // w
         obs.changeFOV(-1/32);
+}
 
+// Obsługa rolki
+window.onwheel = function(){ return false; }
+canvas.addEventListener("wheel", checkWheel, false);
+function checkWheel(e) {
+    var ctrl = e.ctrlKey;
+    if(e.ctrlKey)
+        obs.changeFOV(1/32 * e.deltaY);
+    else if(e.altKey)
+        obs.changeRotation(1/32 * e.deltaY,0,0);
+    else if(e.shiftKey)
+        obs.changeRotation(0,1/32 * e.deltaY,0);
+    else
+        obs.changePosition(0,-1 * e.deltaY,0);
 }
 
 window.onload = function() {
