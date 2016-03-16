@@ -6,6 +6,9 @@ var display = {
     width: canvas.width,
     height: canvas.height
 };
+// Wyświetlanie siatki i układu współrzędnych
+var displayGrid = true;
+var displayGizmo = true;
 
 // sinus i cosinus dla leniwych ( ͡°ᨓ ͡°)
 var pi = Math.PI;
@@ -39,7 +42,7 @@ function renderGizmo() {
     render(new Line(0, 0, 0, 0, 0, length));
     // Reset ustawień
     context.strokeStyle = "rgb(255,255,255)";
-    context.lineWidth=2;
+    context.lineWidth=1;
 
 }
 
@@ -143,10 +146,10 @@ function renderAll(lines) {
     context.clearRect(0, 0, canvas.width, canvas.height);
 
     // Wyświetlanie siatki
-    renderGrid();
+    if(grid) renderGrid();
 
     // Wyświetlanie gizmo
-    renderGizmo();
+    if(gizmo) renderGizmo();
 
     // Wyświetlanie linii
     for(i = 0; i < lines.length; i++) {
@@ -179,6 +182,13 @@ var obs = {
         this.rX += x;
         this.rY += y;
         this.rZ += z;
+        renderAll(turtle.lines);
+    },
+    // statyczne ustawienie kamery
+    setRotation: function(x, y, z) {
+        this.rX = x;
+        this.rY = y;
+        this.rZ = z;
         renderAll(turtle.lines);
     },
     // Zmiana kąta widzenia na przedziale [0.2, PI-0.2]
@@ -321,7 +331,6 @@ function updateStat() {
 document.onkeydown = checkKey;
 function checkKey(e) {
     e = e || window.event;
-    // ruch przód/tył
     if (e.keyCode == '38') // up
         obs.changePosition(0,0,1);
     else if (e.keyCode == '40') // down
@@ -331,11 +340,6 @@ function checkKey(e) {
         obs.changePosition(-1,0,0);
     else if (e.keyCode == '39') // right
         obs.changePosition(1,0,0);
-    // fov
-    else if (e.keyCode == '81') // q
-        obs.changeFOV(1/32);
-    else if (e.keyCode == '87') // w
-        obs.changeFOV(-1/32);
 }
 
 // Obsługa rolki
@@ -353,7 +357,56 @@ function checkWheel(e) {
         obs.changePosition(0,-1 * e.deltaY,0);
 }
 
+// Modyfikacja kamery środkowym przyciskiem
+var modCam = false;
+var startX = 0;
+var startY = 0;
+var startRotX = 0;
+var startRotY = 0;
+var maxRotX = Math.PI / display.width;
+var maxRotY = Math.PI / display.height;
+
+// Ruch myszką
+canvas.addEventListener("mousemove", moveCamera, false);
+function moveCamera(e) {
+    if(modCam) {
+        x = e.offsetX - startX;
+        y = e.offsetY - startY;
+        rotX = x * maxRotX + startRotX;
+        rotY = y * maxRotY + startRotY;
+        obs.setRotation(rotY,rotX,obs.rZ);
+    }
+}
+
+// Wciśnięcie przycisku
+canvas.addEventListener("mousedown", checkButton, false);
+function checkButton(e) {
+    modCam = e.which == 2;
+    if(modCam) {
+        startRotX = obs.rY;
+        startRotY = obs.rX;
+        startX = e.offsetX;
+        startY = e.offsetY;
+    }
+}
+
+// Zwolnienie przycisku
+canvas.addEventListener("mouseup", downButton, false);
+function downButton(e) {
+    modCam = false;
+}
+
+// Wyświetlanie siatki/gizmo
+function gridDisplay() {
+    grid = document.getElementById('grid').checked;
+    renderAll(turtle.lines);
+}
+function gizmoDisplay() {
+    gizmo = document.getElementById('gizmo').checked;
+    renderAll(turtle.lines);
+}
+
+// Początkowe odpalenie
 window.onload = function() {
-    // początkowe odpalenie
     renderAll(turtle.lines);
 }

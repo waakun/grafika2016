@@ -8,14 +8,11 @@
     <body>
         <canvas id="logo" width="640" height="360" style="background: #000"></canvas>
         <div id="controls">
-            <button onclick="obs.changePosition(0,1,0)">UP</button>
-            <button onclick="obs.changePosition(0,-1,0)">DOWN</button>
-            <button onclick="obs.changePosition(-1,0,0)">LEFT</button>
-            <button onclick="obs.changePosition(1,0,0)">RIGHT</button>
-            <button onclick="obs.changePosition(0,0,1)">FORWARD</button>
-            <button onclick="obs.changePosition(0,0,-1)">BACKWARD</button>
+            <input type="checkbox" id="grid" checked="checked" onclick="gridDisplay();"> siatka
+            <input type="checkbox" id="gizmo" checked="checked" onclick="gizmoDisplay();"> gizmo
         </div>
         <div id="sceneinfo">
+            <strong>kamera:</strong>
             cX:<span id="cX"></span>
             cY:<span id="cY"></span>
             cZ:<span id="cZ"></span>
@@ -23,14 +20,21 @@
             rY:<span id="rY"></span>
             rZ:<span id="rZ"></span>
             fov:<span id="fov"></span><br>
-            <strong>turtle:</strong>
+            <strong>żółw:</strong>
             x:<span id="tX"></span>
             y:<span id="tY"></span>
             z:<span id="tZ"></span>
             &theta;:<span id="tTheta"></span>
             &phi;:<span id="tPhi"></span></div>
-        <p>Dodatkowo niezbyt działające sterowanie strzałkami: down/up: do przodu/do tyłu w osi Z, left/right: obrót kamery w osi Y. Zmiana kąta widzenia: q/w</p>
-        <p>Uwaga: próba wyświetlenia obiektów znajdujących się za kamerą kończy się nieoczekiwanymi artefaktami!</p>
+        <ul><p>Sterowanie:</p>
+            <li>&rarr;&larr; &ndash; ruch w osi X</li>
+            <li>&uarr;&darr; &ndash; ruch w osi Z</li>
+            <li>Kółko myszy &ndash; ruch w osi Y</li>
+            <li>Kółko myszy + ALT &ndash; obrót w osi X</li>
+            <li>Kółko myszy + SHIFT &ndash; obrót w osi Y</li>
+            <li>Kółko myszy + CONTROL &ndash; zmiana kąta widzenia (field of view)</li>
+            <li>Środkowy przycisk &ndash; manipulacja obrotem kamery</li>
+        </ul>
         <script type="text/javascript" src="logo3d.js"></script>
     </body>
 </html>
